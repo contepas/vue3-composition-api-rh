@@ -1,29 +1,27 @@
-# vue3-rush-hour-puzzle
+# Vue3 - Composition API - RH
 
-## Project setup
-```
-yarn install
-```
+## Technologies
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+* Vue 3 (composition API)
+* Typescript
+* Vuex
+* Vue Router
+* Lodash
+* Tailwind
 
-### Compiles and minifies for production
-```
-yarn build
-```
+## Notes
 
-### Run your unit tests
-```
-yarn test:unit
-```
+The application in wrote in Vue 3, with the coposition API.
+Typescript is used in most of the components and only to add static types.
 
-### Lints and fixes files
-```
-yarn lint
-```
+## Code structure
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+...
+
+## Mocke rest API calls
+
+All the rest API calls are mocked in the restApi service in src/mockBackEnd.
+The server can be turned off, this deabiliate every post, put or delete call.
+
+### Demo
+Check the demo [here]().
