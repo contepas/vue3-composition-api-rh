@@ -1,9 +1,11 @@
 <template>
     <div :class="$style.board">
         <GameVehicle
-            v-for="(vehicle, index) in vehicles"
-            :key="`vehicle_${index}`"
+            v-for="(gameElement, key) in gameElements"
+            :key="`vehicle_${key}`"
             :class="$style.vehicle"
+            :position-raw="gameElement"
+            :element-id="key"
         />
         <GameBarrier
             v-for="(barrier, index) in barriers"
@@ -16,6 +18,7 @@
 import { defineComponent, reactive } from 'vue'
 import GameVehicle from './GameVehicle.vue'
 import GameBarrier from './GameBarrier.vue'
+import { gameElements } from '../composables/stores/gameEngine'
 
 export default defineComponent({
     name: 'GameBoard',
@@ -30,10 +33,13 @@ export default defineComponent({
         },
     },
     setup() {
-        const vehicles = reactive([])
+        const vehicles = reactive([{
+            top: 0,
+            left: 0,
+        }])
         const barriers = reactive([])
         return {
-            vehicles,
+            gameElements,
             barriers,
         }
     },
@@ -42,6 +48,7 @@ export default defineComponent({
 
 <style module lang="scss">
 .board {
+    position: relative;
     margin: 0 auto;
     width: 600px;
     height: 600px;
