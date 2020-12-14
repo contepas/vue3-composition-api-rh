@@ -6,6 +6,7 @@
             :class="$style.vehicle"
             :position-raw="gameElement"
             :element-id="key"
+            @move="moveElement(key, $event)"
         />
         <GameBarrier
             v-for="(barrier, index) in barriers"
@@ -18,7 +19,7 @@
 import { defineComponent, reactive } from 'vue'
 import GameVehicle from './GameVehicle.vue'
 import GameBarrier from './GameBarrier.vue'
-import { gameElements } from '../composables/stores/gameEngine'
+import { gameElements, moveElement } from '../composables/stores/gameEngine'
 
 export default defineComponent({
     name: 'GameBoard',
@@ -40,6 +41,7 @@ export default defineComponent({
         const barriers = reactive([])
         return {
             gameElements,
+            moveElement,
             barriers,
         }
     },
