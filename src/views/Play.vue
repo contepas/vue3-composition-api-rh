@@ -1,31 +1,36 @@
 <template>
     <div>
-        <GameBoard :board-state="boardState"/>
-        <div>
+        <GameBoard v-if="board" :game="board" />
+        <template v-if="gameStarted">
             <BaseButton @click="reset()">Reset</BaseButton>
             <BaseButton @click="changePuzzle()">ChangePuzzle</BaseButton>
-        </div>
+        </template>
+        <template v-else>
+            <BaseButton @click="start()">Start</BaseButton>
+        </template>
     </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 import BaseButton from '../components/BaseButton.vue'
 import GameBoard from '../components/GameBoard.vue'
+import { start, changePuzzle, reset, board } from '../composables/stores/game'
 
 export default defineComponent({
     components: {
         BaseButton,
         GameBoard,
     },
-    setup () {
-        const reset = () => console.log('reset')
-        const changePuzzle = () => console.log('change puzzle')
-        const boardState = ref('')
+    setup() {
+        const gameStarted = computed(() => !!board.value)
         return {
+            start,
             reset,
-            changePuzzle
+            changePuzzle,
+            board,
+            gameStarted,
         }
-    }
+    },
 })
 </script>

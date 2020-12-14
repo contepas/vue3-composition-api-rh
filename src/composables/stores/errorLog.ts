@@ -14,4 +14,5 @@ export const saveError = (error: Error) => {
     }
 }
 
-export const activateSendErrors = () => window.addEventListener('beforeunload', (e) => sendErrors())
+export const activateSendErrors = () =>
+    window.addEventListener('beforeunload', e => sendErrors())

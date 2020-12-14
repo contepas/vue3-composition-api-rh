@@ -1,13 +1,13 @@
 <template>
-  <h1>404 page not found</h1>
+    <h3>404 page not found</h3>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from 'vue'
 
 export default defineComponent({
-  setup() {
-    return {};
-  }
-});
+    setup() {
+        return {}
+    },
+})
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div></div>
+    <div :class="$style.barrier"></div>
 </template>
 
 <script lang="ts">
@@ -11,3 +11,9 @@ export default defineComponent({
     },
 })
 </script>
+
+<style module>
+.barrier {
+    @apply border-green-800;
+}
+</style>

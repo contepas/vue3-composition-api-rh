@@ -1,28 +1,50 @@
 <template>
-  <div class="board"></div>
+    <div :class="$style.board">
+        <GameVehicle
+            v-for="(vehicle, index) in vehicles"
+            :key="`vehicle_${index}`"
+            :class="$style.vehicle"
+        />
+        <GameBarrier
+            v-for="(barrier, index) in barriers"
+            :key="`barrier_${index}`"
+        />
+    </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, reactive } from 'vue'
+import GameVehicle from './GameVehicle.vue'
+import GameBarrier from './GameBarrier.vue'
 
 export default defineComponent({
-  name: "GameBoard"
-});
+    name: 'GameBoard',
+    components: {
+        GameVehicle,
+        GameBarrier,
+    },
+    props: {
+        game: {
+            type: String,
+            required: true,
+        },
+    },
+    setup() {
+        const vehicles = reactive([])
+        const barriers = reactive([])
+        return {
+            vehicles,
+            barriers,
+        }
+    },
+})
 </script>
 
 <style module lang="scss">
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+.board {
+    margin: 0 auto;
+    width: 600px;
+    height: 600px;
+    @apply border-4 border-opacity-100 border-green-900 border-solid rounded-sm;
 }
 </style>

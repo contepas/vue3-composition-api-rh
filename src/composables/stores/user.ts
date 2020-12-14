@@ -18,19 +18,19 @@ const initialState = () => ({
     userId: null,
     name: '',
     email: '',
-    gamesPlayed: []
+    gamesPlayed: [],
 })
 
 const state: State = reactive(initialState())
+// setInterval(() => console.log(state), 5000)
 
 export const loadUserData = async (userId: number) => {
-    const {success, data} = getUserData(userId)
-    if (success) {
-        const {name, email, gamesPlayed} = data
-        state.userId = userId
+    const { success, data } = await getUserData(userId)
+    if (success && !!data) {
+        const { id, name, email, gamesPlayed } = data
+        state.userId = id
         state.name = name
-        state.email = email,
-        state.gamesPlayed = gamesPlayed
+        ;(state.email = email), (state.gamesPlayed = gamesPlayed)
     } else {
         throw 'Someting went wrong'
     }
