@@ -16,3 +16,11 @@ export default defineComponent({
     },
 })
 </script>
+
+<style lang="scss" module>
+h1 {
+    font-weight: bold;
+    font-size: 101px;
+    margin: 100px auto;
+}
+</style>

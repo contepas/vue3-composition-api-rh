@@ -50,7 +50,7 @@ export default defineComponent({
 <style module lang="scss">
 .board {
     position: relative;
-    margin: 0 auto;
+    margin: 50px auto;
     width: 608px;
     height: 608px;
     @apply border-4 border-opacity-100 border-green-900 border-solid rounded-sm;
