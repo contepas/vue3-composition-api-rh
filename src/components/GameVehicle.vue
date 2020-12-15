@@ -1,6 +1,6 @@
 <template>
     <div
-        :style="style"
+        :style="elementStyle"
         :class="$style.vehicle"
         ref="gameElement"
         @click="move($event)"
@@ -48,11 +48,24 @@ export default defineComponent({
                 left: (positionRaw[0] % 6) * 100,
             }
         })
-        const style = computed(() => {
+
+        const styleBase = computed(() => {
             const { width, height } = measures.value
             const { top, left } = position.value
-            return `width: ${width}px; height: ${height}px; top: ${top}px; left: ${left}px`
+            return `width: ${width}px; height: ${height}px; top: ${top}px; left: ${left}px;`
         })
+
+        const styleObstacle = computed(() => {
+            const { positionRaw } = props
+            return positionRaw.length === 1 ? `border-radius: 3px; background-color: #333;` : ''
+        })
+
+        const styleRedCar = computed(() => {
+            const { elementId } = props
+            return elementId === 'A' ? `background-color: red; border-radius: 25px;` : ''
+        })
+
+        const elementStyle = computed(() => styleBase.value + styleObstacle.value + styleRedCar.value)
 
         const gameElement: Ref<HTMLElement | null> = ref(null)
         const move = (event: MouseEvent) => {
@@ -65,12 +78,14 @@ export default defineComponent({
                 const x = element ? event.clientX - element.left : null
                 direction = x && x < measures.value.width / 2 ? 'left' : 'right'
             }
-            emit('move', direction)
+            if (props.positionRaw.length !== 1) {
+                emit('move', direction)
+            }
         }
         return {
             measures,
             position,
-            style,
+            elementStyle,
             move,
             gameElement,
         }
@@ -86,6 +101,8 @@ export default defineComponent({
     top: 0px;
     position: absolute;
     left: 100px;
+    border-radius: 50px;
+    background-color: green;
     @apply border-green-600;
 }
 </style>
