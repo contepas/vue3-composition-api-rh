@@ -1,5 +1,6 @@
 <template>
     <div>
+        <h1 v-if="compleated">Congratulations!!! You won the Game</h1>
         <GameBoard v-if="gameElements" :game="gameElements" />
         <template v-if="gameElements">
             <BaseButton @click="restartGame()">Reset</BaseButton>
@@ -16,7 +17,7 @@ import { defineComponent, ref, computed } from 'vue'
 import BaseButton from '../components/BaseButton.vue'
 import GameBoard from '../components/GameBoard.vue'
 import { start, changePuzzle } from '../composables/stores/game'
-import { gameElements, restartGame } from '../composables/stores/gameEngine'
+import { gameElements, restartGame, compleated } from '../composables/stores/gameEngine'
 
 export default defineComponent({
     components: {
@@ -30,6 +31,7 @@ export default defineComponent({
             restartGame,
             changePuzzle,
             gameElements,
+            compleated,
         }
     },
 })

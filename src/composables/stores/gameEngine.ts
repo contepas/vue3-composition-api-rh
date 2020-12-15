@@ -17,6 +17,12 @@ const state:State = reactive({
 })
 // setInterval(() => console.log(state), 5000)
 
+export const compleated = computed(() => {
+    return state.vehicles['A']
+        ? state.vehicles['A'].includes(17)
+        : false
+})
+
 export const gameElements = computed(() => {
     const { initialGame, vehicles, obstacles } = state
     return isEmpty(initialGame) 
