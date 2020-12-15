@@ -1,3 +1,5 @@
+import {ref} from 'vue'
+
 const gamesTable = [
     '60 IBBxooIooLDDJAALooJoKEEMFFKooMGGHHHM 2332',
     '58 BBoKMxDDDKMoIAALooIoJLEEooJFFNoGGoxN 9192',
@@ -24,5 +26,18 @@ const gamesTable = [
     '50 BBBJCCHooJoKHAAJoKooIDDLEEIooLooxoGG 1066',
 ]
 
-export const games = (quantity: number) =>
-    quantity < gamesTable.length ? gamesTable.slice(0, quantity) : gamesTable
+// const lastPlayed = ref(0)
+let lastPlayed = 0
+
+export const games = (quantity: number) => {
+    const response = quantity < gamesTable.length 
+        ? gamesTable.slice(lastPlayed, lastPlayed + quantity) 
+        : gamesTable
+    if (lastPlayed > gamesTable.length -1) {
+        lastPlayed = 0
+    } else {
+        lastPlayed+= quantity
+    }
+    return response
+}
+    

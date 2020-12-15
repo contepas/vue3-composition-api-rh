@@ -1,12 +1,18 @@
 <template>
     <div :class="$style.board">
-        <GameVehicle
-            v-for="(gameElement, key) in gameElements"
+        <GameElement
+            v-for="(vehicle, key) in gameElements.vehicles"
             :key="`vehicle_${key}`"
             :class="$style.vehicle"
-            :position-raw="gameElement"
+            :position-raw="vehicle"
             :element-id="key"
             @move="moveElement(key, $event)"
+        />
+        <GameElement
+            v-for="(obstacle, index) in gameElements.obstacles"
+            :key="`obstacle_${index}`"
+            :class="$style.vehicle"
+            :position-raw="[obstacle]"
         />
         <span :class="$style.exit">
             <SvgArrow />
@@ -16,14 +22,14 @@
 
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
-import GameVehicle from './GameVehicle.vue'
+import GameElement from './GameElement.vue'
 import SvgArrow from './icons/SvgArrow.vue'
 import { gameElements, moveElement } from '../composables/stores/gameEngine'
 
 export default defineComponent({
     name: 'GameBoard',
     components: {
-        GameVehicle,
+        GameElement,
         SvgArrow
     },
     props: {

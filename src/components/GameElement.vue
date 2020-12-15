@@ -11,11 +11,11 @@
 import { defineComponent, computed, PropType, ref, Ref } from 'vue'
 
 export default defineComponent({
-    name: 'GameVehicle',
+    name: 'GameElement',
     props: {
         elementId: {
             type: String,
-            required: true,
+            default: null,
         },
         positionRaw: {
             type: Array as PropType<number[]>,
@@ -56,8 +56,8 @@ export default defineComponent({
         })
 
         const styleObstacle = computed(() => {
-            const { positionRaw } = props
-            return positionRaw.length === 1 ? `border-radius: 3px; background-color: #333;` : ''
+            const { elementId } = props
+            return !elementId ? `border-radius: 3px; background-color: #333;` : ''
         })
 
         const styleRedCar = computed(() => {
@@ -78,9 +78,7 @@ export default defineComponent({
                 const x = element ? event.clientX - element.left : null
                 direction = x && x < measures.value.width / 2 ? 'left' : 'right'
             }
-            if (props.positionRaw.length !== 1) {
-                emit('move', direction)
-            }
+            emit('move', direction)
         }
         return {
             measures,

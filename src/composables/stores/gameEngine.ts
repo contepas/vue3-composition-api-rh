@@ -4,21 +4,27 @@ import { isEmpty, cloneDeep } from 'lodash'
 
 interface State {
     initialGame: {[name: string]: number[]}
-    gameElements: {[name: string]: number[]}
+    vehicles: {[name: string]: number[]}
+    obstacles: number[]
     emptySpaces: number[]
 }
 
 const state:State = reactive({
     initialGame: {},
-    gameElements: {},
+    vehicles: {},
+    obstacles: [],
     emptySpaces: [],
 })
-
-setInterval(() => console.log(state), 5000)
+// setInterval(() => console.log(state), 5000)
 
 export const gameElements = computed(() => {
-    const { gameElements } = state
-    return isEmpty(gameElements) ? null : gameElements
+    const { initialGame, vehicles, obstacles } = state
+    return isEmpty(initialGame) 
+        ? null 
+        : {
+            vehicles,
+            obstacles,
+        }
 })
 
 
@@ -32,53 +38,55 @@ export const startGame = (game: string) => {
         }
         return acc
     }, {} as {[name: string]: number[]})
-    const { o: emptySpaces, ...otherGameElements } = gameElements
+    const { o: emptySpaces, x: obstacles, ...vehicles } = gameElements
     state.initialGame = cloneDeep(gameElements)
-    state.gameElements = otherGameElements
+    state.vehicles = vehicles
+    state.obstacles = obstacles
     state.emptySpaces = emptySpaces
 }
 
 export const restartGame = () => {
-    const { o: emptySpaces, ...otherGameElements } = cloneDeep(state.initialGame)
-    state.gameElements = otherGameElements
+    const { o: emptySpaces, x: obstacles, ...vehicles } = cloneDeep(state.initialGame)
+    state.vehicles = vehicles
+    state.obstacles = obstacles
     state.emptySpaces = emptySpaces
 }
 
 export const moveElement = (id: string, direction: string) => {
     const { emptySpaces } = state
     if (direction === 'up') {
-        const newPosition = state.gameElements[id][0] - 6
+        const newPosition = state.vehicles[id][0] - 6
         const indexEmptySpace = emptySpaces.indexOf(newPosition)
         if (indexEmptySpace !== -1) {
-            const lengthDelta = (state.gameElements[id].length - 1) * 6
-            emptySpaces[indexEmptySpace] = state.gameElements[id][0] + lengthDelta
-            state.gameElements[id][0] = newPosition
+            const lengthDelta = (state.vehicles[id].length - 1) * 6
+            emptySpaces[indexEmptySpace] = state.vehicles[id][0] + lengthDelta
+            state.vehicles[id][0] = newPosition
         }
     } else if (direction === 'down') {
-        const newPosition = state.gameElements[id][0] + 6
-        const lengthDelta = (state.gameElements[id].length - 1) * 6
+        const newPosition = state.vehicles[id][0] + 6
+        const lengthDelta = (state.vehicles[id].length - 1) * 6
         const indexEmptySpace = emptySpaces.indexOf(newPosition + lengthDelta)
         if (indexEmptySpace !== -1) {
-            emptySpaces[indexEmptySpace] = state.gameElements[id][0]
-            state.gameElements[id][0] = newPosition
+            emptySpaces[indexEmptySpace] = state.vehicles[id][0]
+            state.vehicles[id][0] = newPosition
         }
     } else if (direction === 'right') {
-        const lengthDelta = state.gameElements[id].length -1
-        const newPosition = state.gameElements[id][0] + 1 
+        const lengthDelta = state.vehicles[id].length -1
+        const newPosition = state.vehicles[id][0] + 1 
         const indexEmptySpace = emptySpaces.indexOf(newPosition + lengthDelta)
         if (indexEmptySpace !== -1) {
-            emptySpaces[indexEmptySpace] = state.gameElements[id][0]
-            state.gameElements[id][0] = newPosition
-            state.gameElements[id][1] = newPosition +1
+            emptySpaces[indexEmptySpace] = state.vehicles[id][0]
+            state.vehicles[id][0] = newPosition
+            state.vehicles[id][1] = newPosition +1
         }
     } else if (direction === 'left') {
-        const lengthDelta = state.gameElements[id].length -1
-        const newPosition = state.gameElements[id][0] - 1 
+        const lengthDelta = state.vehicles[id].length -1
+        const newPosition = state.vehicles[id][0] - 1 
         const indexEmptySpace = emptySpaces.indexOf(newPosition)
         if (indexEmptySpace !== -1) {
-            emptySpaces[indexEmptySpace] = state.gameElements[id][0] + lengthDelta
-            state.gameElements[id][0] = newPosition
-            state.gameElements[id][1] = newPosition +1
+            emptySpaces[indexEmptySpace] = state.vehicles[id][0] + lengthDelta
+            state.vehicles[id][0] = newPosition
+            state.vehicles[id][1] = newPosition +1
         }
     }
 }

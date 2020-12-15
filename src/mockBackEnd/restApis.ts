@@ -34,7 +34,7 @@ const nextUniqueId = () => id++
 
 export const getGamesCall = async (id: number | null, quantity: number) => {
     await setTimeout(() => {
-        console.log('response arrived')
+        // console.log('response getGamesCall arrived')
     }, 3000)
     const response: ResponseGetGames = {
         success: true,
@@ -62,7 +62,7 @@ export const getUserData = async (
         success: true,
     }
     await setTimeout(() => {
-        console.log('response arrived')
+        // console.log('response getUserData arrived')
     }, 3000)
     if (id !== null) {
         response.data = {

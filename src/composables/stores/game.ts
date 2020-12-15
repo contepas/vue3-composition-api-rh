@@ -29,11 +29,15 @@ export const board = computed(() => {
         ? state.games[state.lastGamePlayed]
         : null
 })
+watch(board, (newBoard) => {
+    if (newBoard !== null && newBoard !== undefined)
+        startGame(newBoard)
+})
 
 // ====================
 // ACTIONS / MUTATIONS
 // ====================
-export const start = async (quantity: number) => {
+export const start = async (quantity = 3) => {
     if (userId.value) {
         const {
             success,
@@ -44,7 +48,6 @@ export const start = async (quantity: number) => {
         if (success && id === userId.value) {
             if (data) state.games = data
             state.lastGamePlayed = 0
-            if (board.value) startGame(board.value)
         } else {
             throw message || 'Someting went wrong'
         }
@@ -54,5 +57,9 @@ export const start = async (quantity: number) => {
 }
 
 export const changePuzzle = () => {
-    console.log('change puzzle')
+    if (state.lastGamePlayed !== null && (state.games.length -1 > state.lastGamePlayed)) {
+        state.lastGamePlayed++
+    } else {
+        start()
+    }
 }
