@@ -56,7 +56,3 @@ export const start = async (quantity: number) => {
 export const changePuzzle = () => {
     console.log('change puzzle')
 }
-
-export const reset = () => {
-    console.log('Reset Game')
-}

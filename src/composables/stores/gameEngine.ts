@@ -1,38 +1,24 @@
 import { ref, computed, reactive, Ref, watch } from 'vue'
+import { isEmpty, cloneDeep } from 'lodash'
 
-interface Vehicle {
-    position: string
-    top: number
-    left: number
-}
 
 interface State {
+    initialGame: {[name: string]: number[]}
     gameElements: {[name: string]: number[]}
     emptySpaces: number[]
-    redCar: Vehicle
-    vehicles: Vehicle[]
-    obstacles: Vehicle[]
 }
 
 const state:State = reactive({
+    initialGame: {},
     gameElements: {},
     emptySpaces: [],
-    redCar: {
-        position: '',
-        top: 0,
-        left: 0,
-    },
-    vehicles: [],
-    obstacles: [],
 })
 
-// setInterval(() => console.log(state.gameElements), 5000)
+setInterval(() => console.log(state), 5000)
 
 export const gameElements = computed(() => {
     const { gameElements } = state
-    return gameElements
-    // const gameElements = []
-    // state.gameElements.reduce()
+    return isEmpty(gameElements) ? null : gameElements
 })
 
 
@@ -47,6 +33,13 @@ export const startGame = (game: string) => {
         return acc
     }, {} as {[name: string]: number[]})
     const { o: emptySpaces, ...otherGameElements } = gameElements
+    state.initialGame = cloneDeep(gameElements)
+    state.gameElements = otherGameElements
+    state.emptySpaces = emptySpaces
+}
+
+export const restartGame = () => {
+    const { o: emptySpaces, ...otherGameElements } = cloneDeep(state.initialGame)
     state.gameElements = otherGameElements
     state.emptySpaces = emptySpaces
 }

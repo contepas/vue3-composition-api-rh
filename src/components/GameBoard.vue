@@ -28,7 +28,7 @@ export default defineComponent({
     },
     props: {
         game: {
-            type: String,
+            type: Object,
             required: true,
         },
     },
