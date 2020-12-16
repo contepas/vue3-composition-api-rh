@@ -1,14 +1,20 @@
 <template>
     <div>
         <h1 v-if="compleated">Congratulations!!! You won the Game</h1>
-        <GameBoard v-if="gameElements" :game="gameElements" />
         <template v-if="gameElements">
-            <BaseButton @click="restartGame()">Reset</BaseButton>
-            <BaseButton @click="changePuzzle()">ChangePuzzle</BaseButton>
+            <BaseButton @click="stop()">Menu</BaseButton>
+            <GameBoard :game="gameElements" />
+            <div>
+                <BaseButton @click="restartGame()">Reset</BaseButton>
+                <BaseButton @click="changePuzzle()">ChangePuzzle</BaseButton>
+            </div>
         </template>
-        <template v-else>
-            <BaseButton @click="start()">Start</BaseButton>
-        </template>
+        <div class="menu" v-else>
+            <BaseButton @click="start('hard')">Hard</BaseButton>
+            <BaseButton @click="start('difficult')">Difficult</BaseButton>
+            <BaseButton @click="start('medium')">Medium</BaseButton>
+            <BaseButton @click="start('easy')">Easy</BaseButton>
+        </div>
     </div>
 </template>
 
@@ -16,7 +22,7 @@
 import { defineComponent, ref, computed } from 'vue'
 import BaseButton from '../components/BaseButton.vue'
 import GameBoard from '../components/GameBoard.vue'
-import { start, changePuzzle } from '../composables/stores/game'
+import { start, stop, changePuzzle } from '../composables/stores/game'
 import { gameElements, restartGame, compleated } from '../composables/stores/gameEngine'
 
 export default defineComponent({
@@ -28,6 +34,7 @@ export default defineComponent({
 
         return {
             start,
+            stop,
             restartGame,
             changePuzzle,
             gameElements,
@@ -36,3 +43,11 @@ export default defineComponent({
     },
 })
 </script>
+
+<style lang="scss" scoped>
+.menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+</style>

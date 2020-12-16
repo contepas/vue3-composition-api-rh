@@ -32,7 +32,7 @@ interface ResponseGetGames extends Response {
 let id = 1
 const nextUniqueId = () => id++
 
-export const getGamesCall = async (id: number | null, quantity: number) => {
+export const getGamesCall = async (id: number | null, quantity: number, mode: 'easy' | 'medium' | 'difficult' | 'hard') => {
     await setTimeout(() => {
         // console.log('response getGamesCall arrived')
     }, 3000)
@@ -40,7 +40,7 @@ export const getGamesCall = async (id: number | null, quantity: number) => {
         success: true,
     }
     if (getIsServerUp.value) {
-        response.data = games(quantity)
+        response.data = games(quantity, mode)
         if (id) {
             response.id = id
             // get 'quantity' different games with id request

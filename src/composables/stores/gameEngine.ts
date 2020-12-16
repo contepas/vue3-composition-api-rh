@@ -9,13 +9,15 @@ interface State {
     emptySpaces: number[]
 }
 
-const state:State = reactive({
+const initialState = () => (reactive({
     initialGame: {},
     vehicles: {},
     obstacles: [],
     emptySpaces: [],
-})
-// setInterval(() => console.log(state), 5000)
+}))
+
+const state:State =  initialState()
+// setInterval(() => console.log(state.initialGame), 5000)
 
 export const compleated = computed(() => {
     return state.vehicles['A']
@@ -33,6 +35,9 @@ export const gameElements = computed(() => {
         }
 })
 
+export const stopGame = () => {
+    Object.assign(state, initialState())
+}
 
 export const startGame = (game: string) => {
     const gameElementsString = game.substring(3, 39)
@@ -63,7 +68,7 @@ export const moveElement = (id: string, direction: string) => {
     if (direction === 'up') {
         const newPosition = state.vehicles[id][0] - 6
         const indexEmptySpace = emptySpaces.indexOf(newPosition)
-        if (indexEmptySpace !== -1) {
+        if (indexEmptySpace !== -1 && state.vehicles[id][0] > 0) {
             const lengthDelta = (state.vehicles[id].length - 1) * 6
             emptySpaces[indexEmptySpace] = state.vehicles[id][0] + lengthDelta
             state.vehicles[id][0] = newPosition
@@ -72,7 +77,7 @@ export const moveElement = (id: string, direction: string) => {
         const newPosition = state.vehicles[id][0] + 6
         const lengthDelta = (state.vehicles[id].length - 1) * 6
         const indexEmptySpace = emptySpaces.indexOf(newPosition + lengthDelta)
-        if (indexEmptySpace !== -1) {
+        if (indexEmptySpace !== -1 && state.vehicles[id][0] + (state.vehicles[id].length - 1) * 6 < 35) {
             emptySpaces[indexEmptySpace] = state.vehicles[id][0]
             state.vehicles[id][0] = newPosition
         }
@@ -80,7 +85,7 @@ export const moveElement = (id: string, direction: string) => {
         const lengthDelta = state.vehicles[id].length -1
         const newPosition = state.vehicles[id][0] + 1 
         const indexEmptySpace = emptySpaces.indexOf(newPosition + lengthDelta)
-        if (indexEmptySpace !== -1) {
+        if (indexEmptySpace !== -1 && state.vehicles[id][0] % 6 + state.vehicles[id].length - 1 < 5) {
             emptySpaces[indexEmptySpace] = state.vehicles[id][0]
             state.vehicles[id][0] = newPosition
             state.vehicles[id][1] = newPosition +1
@@ -89,7 +94,7 @@ export const moveElement = (id: string, direction: string) => {
         const lengthDelta = state.vehicles[id].length -1
         const newPosition = state.vehicles[id][0] - 1 
         const indexEmptySpace = emptySpaces.indexOf(newPosition)
-        if (indexEmptySpace !== -1) {
+        if (indexEmptySpace !== -1 && state.vehicles[id][0] % 6 > 0) {
             emptySpaces[indexEmptySpace] = state.vehicles[id][0] + lengthDelta
             state.vehicles[id][0] = newPosition
             state.vehicles[id][1] = newPosition +1

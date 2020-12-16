@@ -1,24 +1,31 @@
-import { ref, computed, reactive, Ref, watch } from 'vue'
+import { ref, computed, reactive, Ref, watch, watchEffect } from 'vue'
 import { getGamesCall } from '../../mockBackEnd/restApis'
 import { userId } from '../stores/user'
-import { startGame } from '../stores/gameEngine'
+import { startGame, stopGame } from '../stores/gameEngine'
+import { cloneDeep } from 'lodash'
 
 // ========================
 // INTERFACES SELLERS STORE
 // ========================
+type Mode = | 'easy' | 'medium' | 'difficult' | 'hard'
+
 interface State {
     games: string[]
     lastGamePlayed: number | null
+    mode: null | Mode
 }
 
 // ======
 // STATE
 // ======
-const state: State = reactive({
+const initialState = () => (reactive({
     games: [],
     lastGamePlayed: null,
-})
+    mode: null,
+}))
+const state: State = initialState()
 // setInterval(() => console.log(state), 5000)
+
 
 // ========
 // GETTERS
@@ -37,14 +44,15 @@ watch(board, (newBoard) => {
 // ====================
 // ACTIONS / MUTATIONS
 // ====================
-export const start = async (quantity = 3) => {
+export const start = async (mode: Mode, quantity = 3) => {
+    state.mode = mode
     if (userId.value) {
         const {
             success,
             data = null,
             id = null,
             message = null,
-        } = await getGamesCall(userId.value, quantity)
+        } = await getGamesCall(userId.value, quantity, mode)
         if (success && id === userId.value) {
             if (data) state.games = data
             state.lastGamePlayed = 0
@@ -56,10 +64,15 @@ export const start = async (quantity = 3) => {
     }
 }
 
+export const stop = async () => {
+    Object.assign(state, initialState())
+    stopGame()
+}
+
 export const changePuzzle = () => {
     if (state.lastGamePlayed !== null && (state.games.length -1 > state.lastGamePlayed)) {
         state.lastGamePlayed++
-    } else {
-        start()
+    } else if (state.mode) {
+        start(state.mode)
     }
 }
